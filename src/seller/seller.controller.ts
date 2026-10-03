@@ -11,7 +11,7 @@ import {
   HttpStatus,
   Get,
 } from '@nestjs/common';
-import { SellersService } from './seller.service';
+import { SellerService } from './seller.service';
 import { UpdateShopDto } from './dto/update-shop.dto';
 import { Roles } from 'src/common/decorators/roles/roles.decorator';
 import { Role } from 'src/generated/prisma/enums';
@@ -23,8 +23,8 @@ import { createParseFileValidator } from 'src/common/validators/files/files-vali
 type File = Express.Multer.File;
 
 @Controller('sellers')
-export class SellersController {
-  constructor(private readonly sellersService: SellersService) {}
+export class SellerController {
+  constructor(private readonly sellerService: SellerService) {}
 
   @Post('shop')
   @UseGuards(AuthGuard)
@@ -43,7 +43,7 @@ export class SellersController {
     )
     logo: File,
   ) {
-    return this.sellersService.createShop(req.user.id, dto, logo);
+    return this.sellerService.createShop(req.user.id, dto, logo);
   }
 
   @Patch('shop')
@@ -63,13 +63,13 @@ export class SellersController {
     )
     logo: File,
   ) {
-    return this.sellersService.updateShop(req.user.id, dto, logo);
+    return this.sellerService.updateShop(req.user.id, dto, logo);
   }
 
   @Get('shop')
   @UseGuards(AuthGuard)
   @Roles(Role.SELLER)
   getShop(@Req() req) {
-    return this.sellersService.getShop(req.user.id);
+    return this.sellerService.getShop(req.user.id);
   }
 }

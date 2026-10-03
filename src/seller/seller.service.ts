@@ -8,7 +8,7 @@ import 'multer';
 type File = Express.Multer.File;
 
 @Injectable()
-export class SellersService {
+export class SellerService {
   constructor(private prisma: PrismaService) {}
 
   async createShop(userId: string, dto: CreateShopDto, logo: File) {

@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { SellersModule } from './sellers/sellers.module';
+import { SellerModule } from './seller/seller.module';
 import { envValidationSchema } from './common/config/env.validation';
 import envConfig from './common/config/env.config';
 
@@ -21,7 +21,7 @@ import envConfig from './common/config/env.config';
     }),
 
     AuthModule,
-    SellersModule,
+    SellerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { SellersService } from './seller.service';
-import { SellersController } from './seller.controller';
+import { SellerService } from './seller.service';
+import { SellerController } from './seller.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
@@ -19,7 +19,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
   ],
 
-  controllers: [SellersController],
-  providers: [SellersService],
+  controllers: [SellerController],
+  providers: [SellerService],
 })
-export class SellersModule {}
+export class SellerModule {}
