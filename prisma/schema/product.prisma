@@ -1,0 +1,25 @@
+model Product {
+  id          String   @id @default(uuid())
+
+  sellerId    String
+  seller      SellerProfile @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+
+  categoryId  String
+  category    Category      @relation(fields: [categoryId], references: [id])
+
+  name        String
+  description String?
+  price       Decimal  @db.Decimal(10, 2)
+  stock       Int      @default(0)
+  status ProductStatus @default(ACTIVE)
+
+  images      ProductImage[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([sellerId])
+  @@index([categoryId])
+  @@index([status])
+  @@index([createdAt])
+}

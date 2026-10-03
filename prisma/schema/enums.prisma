@@ -9,3 +9,8 @@ enum SellerProfileStatus {
   ACTIVE
   BLOCKED
 }
+
+enum ProductStatus {
+  ACTIVE
+  INACTIVE
+}
