@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, Post } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 import { CreateShopDto } from './dto/create-shop.dto';
-import { Role, SellerStatus } from 'src/generated/prisma/enums';
+import { Role, SellerProfileStatus } from 'src/generated/prisma/enums';
 import { UpdateShopDto } from './dto/update-shop.dto';
 import 'multer';
 
@@ -36,7 +36,7 @@ export class SellersService {
         facebookUrl: dto.facebookUrl,
         instagramUrl: dto.instagramUrl,
 
-        status: SellerStatus.ACTIVE,
+        status: SellerProfileStatus.ACTIVE,
       },
     });
 

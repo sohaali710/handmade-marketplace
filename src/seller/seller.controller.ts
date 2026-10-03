@@ -8,13 +8,10 @@ import {
   UseGuards,
   UseInterceptors,
   UploadedFile,
-  ParseFilePipe,
-  MaxFileSizeValidator,
-  FileTypeValidator,
   HttpStatus,
   Get,
 } from '@nestjs/common';
-import { SellersService } from './sellers.service';
+import { SellersService } from './seller.service';
 import { UpdateShopDto } from './dto/update-shop.dto';
 import { Roles } from 'src/common/decorators/roles/roles.decorator';
 import { Role } from 'src/generated/prisma/enums';
