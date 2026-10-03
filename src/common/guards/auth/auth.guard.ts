@@ -7,7 +7,11 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { PrismaService } from 'prisma/prisma.service';
-import { Role } from 'src/generated/prisma/enums';
+
+export type User = {
+  id: string;
+  email: string;
+};
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -26,11 +30,7 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const payload = await this.jwtService.verifyAsync<{
-        id: string;
-        email: string;
-        role: Role;
-      }>(token, {
+      const payload = await this.jwtService.verifyAsync<User>(token, {
         secret: process.env.JWT_SECRET,
       });
 
@@ -43,7 +43,11 @@ export class AuthGuard implements CanActivate {
         throw new UnauthorizedException('Please login again');
       }
 
-      request['user'] = payload;
+      request['user'] = {
+        id: user.id,
+        email: user.email,
+        role: user.role, // Add role to check role permission in controller (RoleGuard)
+      };
     } catch {
       throw new UnauthorizedException('Please login again');
     }

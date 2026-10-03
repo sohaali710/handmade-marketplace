@@ -19,6 +19,7 @@ import { CreateShopDto } from './dto/create-shop.dto';
 import { AuthGuard } from 'src/common/guards/auth/auth.guard';
 import 'multer';
 import { createParseFileValidator } from 'src/common/validators/files/files-validation-factory';
+import { RolesGuard } from 'src/common/guards/roles/roles.guard';
 
 type File = Express.Multer.File;
 
@@ -27,8 +28,8 @@ export class SellerController {
   constructor(private readonly sellerService: SellerService) {}
 
   @Post('shop')
-  @UseGuards(AuthGuard)
-  @Roles(Role.USER)
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.USER, Role.SELLER)
   @UseInterceptors(FileInterceptor('logo'))
   async createShop(
     @Req() req,
@@ -47,7 +48,7 @@ export class SellerController {
   }
 
   @Patch('shop')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.SELLER)
   @UseInterceptors(FileInterceptor('logo'))
   updateShop(
@@ -67,7 +68,7 @@ export class SellerController {
   }
 
   @Get('shop')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.SELLER)
   getShop(@Req() req) {
     return this.sellerService.getShop(req.user.id);
