@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { SellerModule } from './seller/seller.module';
 import { envValidationSchema } from './common/config/env.validation';
+import { CategoryModule } from './category/category.module';
 import envConfig from './common/config/env.config';
 import { AdminModule } from './admin/admin.module';
 
@@ -24,6 +25,7 @@ import { AdminModule } from './admin/admin.module';
     AuthModule,
     AdminModule,
     SellerModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
