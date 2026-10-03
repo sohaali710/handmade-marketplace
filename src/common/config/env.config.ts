@@ -16,6 +16,12 @@ export default () => ({
 
   environment: process.env.NODE_ENV ?? 'development',
 
+  admin: {
+    email: process.env.ADMIN_EMAIL,
+    password: process.env.ADMIN_PASSWORD,
+    name: process.env.ADMIN_NAME,
+  },
+
   database: {
     url: process.env.DATABASE_URL,
   },
@@ -27,5 +33,10 @@ export default () => ({
 
   bcrypt: {
     salt: Number(process.env.BCRYPT_SALT ?? 10),
+  },
+
+  redis: {
+    host: process.env.REDIS_HOST,
+    port: Number(process.env.REDIS_PORT),
   },
 });

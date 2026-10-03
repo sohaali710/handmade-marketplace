@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { SellerModule } from './seller/seller.module';
 import { envValidationSchema } from './common/config/env.validation';
 import envConfig from './common/config/env.config';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import envConfig from './common/config/env.config';
     }),
 
     AuthModule,
+    AdminModule,
     SellerModule,
   ],
   controllers: [AppController],
