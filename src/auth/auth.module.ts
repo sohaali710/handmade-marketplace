@@ -10,9 +10,8 @@ import { StringValue } from 'ms';
 
 @Module({
   imports: [
-    PrismaModule,
-
     JwtModule.registerAsync({
+      global: true,
       imports: [ConfigModule],
       inject: [ConfigService],
 

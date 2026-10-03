@@ -8,9 +8,13 @@ import { envValidationSchema } from './common/config/env.validation';
 import { CategoryModule } from './category/category.module';
 import envConfig from './common/config/env.config';
 import { AdminModule } from './admin/admin.module';
+import { PrismaModule } from 'prisma/prisma.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
+    PrismaModule,
+
     ConfigModule.forRoot({
       envFilePath:
         process.env.NODE_ENV === 'development'
@@ -26,7 +30,9 @@ import { AdminModule } from './admin/admin.module';
     AdminModule,
     SellerModule,
     CategoryModule,
+    ProductModule,
   ],
+
   controllers: [AppController],
   providers: [AppService],
 })
