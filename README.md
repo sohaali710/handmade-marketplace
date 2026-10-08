@@ -1,6 +1,6 @@
 ### 🧶 Handmade Marketplace API
 
-A backend API for a handmade products marketplace built with NestJS. The platform enables users to create accounts, open their own shops (became sellers), manage handmade product listings, ordering and payment, with administrative tools for managing marketplace content.
+A backend API for a handmade products marketplace built with NestJS. The platform enables users to create accounts, open their own shops, manage handmade product listings, ordering and payment, with administrative tools for managing marketplace content.
 
 #### 🚀 Technologies
 
