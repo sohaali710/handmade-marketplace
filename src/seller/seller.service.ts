@@ -31,7 +31,7 @@ export class SellerService {
         phone: dto.phone,
         address: dto.address,
         logo: logo
-          ? `uploads/tasks/${Date.now()}-${logo.originalname.replace(/\s+/g, '-')}`
+          ? `uploads/seller/${Date.now()}-${logo.originalname.replace(/\s+/g, '-')}`
           : undefined,
         facebookUrl: dto.facebookUrl,
         instagramUrl: dto.instagramUrl,
@@ -65,7 +65,7 @@ export class SellerService {
     }
 
     if (logo) {
-      dto.logo = `uploads/tasks/${Date.now()}-${logo.originalname.replace(/\s+/g, '-')}`;
+      dto.logo = `uploads/seller/${Date.now()}-${logo.originalname.replace(/\s+/g, '-')}`;
     }
 
     return this.prisma.sellerProfile.update({

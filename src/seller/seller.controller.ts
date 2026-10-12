@@ -18,7 +18,10 @@ import { Role } from 'src/generated/prisma/enums';
 import { CreateShopDto } from './dto/create-shop.dto';
 import { AuthGuard } from 'src/common/guards/auth/auth.guard';
 import 'multer';
-import { createParseFileValidator } from 'src/common/validators/files/files-validation-factory';
+import {
+  createMulterOptions,
+  createParseFileValidator,
+} from 'src/common/validators/files/files-validation-factory';
 import { RolesGuard } from 'src/common/guards/roles/roles.guard';
 
 type File = Express.Multer.File;
@@ -30,7 +33,7 @@ export class SellerController {
   @Post('shop')
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.USER, Role.SELLER)
-  @UseInterceptors(FileInterceptor('logo'))
+  @UseInterceptors(FileInterceptor('logo', createMulterOptions('seller')))
   async createShop(
     @Req() req,
     @Body() dto: CreateShopDto,
@@ -50,7 +53,7 @@ export class SellerController {
   @Patch('shop')
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.SELLER)
-  @UseInterceptors(FileInterceptor('logo'))
+  @UseInterceptors(FileInterceptor('logo', createMulterOptions('seller')))
   updateShop(
     @Req() req,
     @Body() dto: UpdateShopDto,
