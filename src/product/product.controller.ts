@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -20,6 +21,7 @@ import { Roles } from 'src/common/decorators/roles/roles.decorator';
 import { Role } from '../generated/prisma/enums';
 import { AuthUser } from 'src/common/types/auth-user.type';
 import { UUIdDto } from 'src/common/dto/uu-id.dto';
+import { GetProductsDto } from './dto/get-products.dto';
 
 @Controller('products')
 export class ProductController {
@@ -72,5 +74,16 @@ export class ProductController {
     const user = req['user'] as AuthUser;
 
     return this.productService.remove(user.id, params.id);
+  }
+
+  // Public apis
+  @Get()
+  findAll(@Query() query: GetProductsDto) {
+    return this.productService.findAll(query);
+  }
+
+  @Get(':id')
+  findOne(@Param('id') productId: string) {
+    return this.productService.findOne(productId);
   }
 }

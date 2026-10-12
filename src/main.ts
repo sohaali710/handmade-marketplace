@@ -18,6 +18,7 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true, // Don't allow extra fields that are not in the DTO
       forbidNonWhitelisted: true, // Throw an error if extra fields are present
+      transform: true, // enable class transformer to transform the data type into another type (ex: string to number)
     }),
   );
 

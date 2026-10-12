@@ -3,10 +3,16 @@ import { PrismaService } from 'prisma/prisma.service';
 
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { GetProductsDto } from './dto/get-products.dto';
+import { ProductStatus } from 'src/generated/prisma/enums';
+import { RedisService } from 'src/common/redis/redis.service';
 
 @Injectable()
 export class ProductService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly redis: RedisService,
+  ) {}
 
   async create(userId: string, dto: CreateProductDto) {
     const seller = await this.prisma.sellerProfile.findUnique({
@@ -186,5 +192,179 @@ export class ProductService {
     return {
       message: 'Product removed successfully',
     };
+  }
+
+  async findAll(query: GetProductsDto) {
+    const cacheKey = this.getProductsCacheKey(query);
+    const cached = await this.redis.get(cacheKey);
+    if (cached) return cached;
+
+    const {
+      search,
+      categoryId,
+      page = 1,
+      limit = 12,
+      minPrice,
+      maxPrice,
+      sortBy = 'createdAt',
+      sortOrder = 'desc',
+    } = query;
+
+    const where = {
+      status: ProductStatus.ACTIVE,
+
+      ...(search && {
+        name: {
+          contains: search,
+          mode: 'insensitive' as const,
+        },
+      }),
+
+      ...(categoryId && {
+        categoryId,
+      }),
+
+      ...(minPrice !== undefined || maxPrice !== undefined
+        ? {
+            price: {
+              ...(minPrice !== undefined && {
+                gte: minPrice,
+              }),
+              ...(maxPrice !== undefined && {
+                lte: maxPrice,
+              }),
+            },
+          }
+        : {}),
+    };
+
+    const skip = (page - 1) * limit;
+
+    const [products, total] = await Promise.all([
+      this.prisma.product.findMany({
+        where,
+        skip,
+        take: limit,
+
+        orderBy: {
+          [sortBy]: sortOrder,
+        },
+
+        include: {
+          category: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+
+          seller: {
+            select: {
+              id: true,
+              shopName: true,
+              logo: true,
+            },
+          },
+
+          images: {
+            orderBy: {
+              createdAt: 'asc',
+            },
+          },
+        },
+      }),
+
+      this.prisma.product.count({
+        where,
+      }),
+    ]);
+
+    const result = {
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+        hasNextPage: page * limit < total,
+        hasPreviousPage: page > 1,
+      },
+
+      data: products,
+    };
+
+    await this.redis.set(cacheKey, result, 60);
+
+    return result;
+  }
+
+  async findOne(productId: string) {
+    const cacheKey = `product:${productId}`;
+    const cached = await this.redis.get(cacheKey);
+    if (cached) return cached;
+
+    const product = await this.prisma.product.findFirst({
+      where: {
+        id: productId,
+        status: ProductStatus.ACTIVE,
+      },
+
+      include: {
+        category: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+          },
+        },
+
+        seller: {
+          select: {
+            id: true,
+            shopName: true,
+            description: true,
+            logo: true,
+          },
+        },
+
+        images: {
+          orderBy: {
+            createdAt: 'asc',
+          },
+        },
+      },
+    });
+
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+
+    await this.redis.set(cacheKey, product, 300); // 5 minutes
+
+    return product;
+  }
+
+  private getProductsCacheKey(query: GetProductsDto): string {
+    const {
+      search = '',
+      categoryId = '',
+      page = 1,
+      limit = 12,
+      minPrice = '',
+      maxPrice = '',
+      sortBy = 'createdAt',
+      sortOrder = 'desc',
+    } = query;
+
+    return [
+      'products',
+      `search=${search}`,
+      `category=${categoryId}`,
+      `page=${page}`,
+      `limit=${limit}`,
+      `minPrice=${minPrice}`,
+      `maxPrice=${maxPrice}`,
+      `sortBy=${sortBy}`,
+      `sortOrder=${sortOrder}`,
+    ].join(':');
   }
 }
