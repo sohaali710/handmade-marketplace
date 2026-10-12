@@ -10,10 +10,14 @@ import envConfig from './common/config/env.config';
 import { AdminModule } from './admin/admin.module';
 import { PrismaModule } from 'prisma/prisma.module';
 import { ProductModule } from './product/product.module';
+import redisConfig from './common/redis/redis.config';
+import { RedisModule } from './common/redis/redis.module';
 
 @Module({
   imports: [
     PrismaModule,
+
+    RedisModule,
 
     ConfigModule.forRoot({
       envFilePath:
@@ -22,7 +26,7 @@ import { ProductModule } from './product/product.module';
           : '.production.env',
 
       isGlobal: true,
-      load: [envConfig],
+      load: [envConfig, redisConfig],
       validationSchema: envValidationSchema,
     }),
 
