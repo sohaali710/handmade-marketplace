@@ -12,12 +12,15 @@ import { PrismaModule } from 'prisma/prisma.module';
 import { ProductModule } from './product/product.module';
 import redisConfig from './common/redis/redis.config';
 import { RedisModule } from './common/redis/redis.module';
+import { CloudinaryModule } from './common/utils/cloudinary/cloudinary.module';
 
 @Module({
   imports: [
     PrismaModule,
 
     RedisModule,
+
+    CloudinaryModule,
 
     ConfigModule.forRoot({
       envFilePath:

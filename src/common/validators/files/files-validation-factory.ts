@@ -8,7 +8,7 @@ import { FileSizeType, FileType } from './types/file.types';
 import { createFileTypeRegex } from './utils/file.util';
 import { NotEmptyArray } from 'src/common/utils/array.util';
 import { parse } from 'bytes';
-import { diskStorage } from 'multer';
+import { diskStorage, memoryStorage } from 'multer';
 import { extname } from 'path';
 
 const createFileValidators = (
@@ -44,17 +44,17 @@ export const createParseFileValidator = (
 
 export function createMulterOptions(folder?: string) {
   return {
-    // storage: memoryStorage(),
+    storage: memoryStorage(),
 
     // To store files on disk storage
-    storage: diskStorage({
-      destination: `./uploads/${folder}`,
+    // storage: diskStorage({
+    //   destination: `./uploads/${folder}`,
 
-      filename: (req, file, cb) => {
-        const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        const ext = extname(file.originalname);
-        cb(null, `${unique}${ext}`);
-      },
-    }),
+    //   filename: (req, file, cb) => {
+    //     const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    //     const ext = extname(file.originalname);
+    //     cb(null, `${unique}${ext}`);
+    //   },
+    // }),
   };
 }

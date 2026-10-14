@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsJSON, IsOptional, IsString } from 'class-validator';
 
 export class CreateShopDto {
   @IsString()
@@ -14,7 +14,7 @@ export class CreateShopDto {
   address!: string;
 
   @IsOptional()
-  @IsString()
+  @IsJSON()
   logo?: string;
 
   @IsOptional()

@@ -33,7 +33,7 @@ export class SellerController {
   @Post('shop')
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.USER, Role.SELLER)
-  @UseInterceptors(FileInterceptor('logo', createMulterOptions('seller')))
+  @UseInterceptors(FileInterceptor('logo', createMulterOptions()))
   async createShop(
     @Req() req,
     @Body() dto: CreateShopDto,
@@ -53,7 +53,7 @@ export class SellerController {
   @Patch('shop')
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.SELLER)
-  @UseInterceptors(FileInterceptor('logo', createMulterOptions('seller')))
+  @UseInterceptors(FileInterceptor('logo', createMulterOptions()))
   updateShop(
     @Req() req,
     @Body() dto: UpdateShopDto,

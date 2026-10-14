@@ -12,7 +12,7 @@ model SellerProfile {
   phone String
   address String
 
-  logo String? // image
+  logo Json? // image
   facebookUrl String?
   instagramUrl String?
 
