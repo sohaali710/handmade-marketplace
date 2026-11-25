@@ -13,6 +13,7 @@ import { ProductModule } from './product/product.module';
 import redisConfig from './common/redis/redis.config';
 import { RedisModule } from './common/redis/redis.module';
 import { CloudinaryModule } from './common/utils/cloudinary/cloudinary.module';
+import { CartModule } from './cart/cart.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { CloudinaryModule } from './common/utils/cloudinary/cloudinary.module';
     SellerModule,
     CategoryModule,
     ProductModule,
+    CartModule,
   ],
 
   controllers: [AppController],
